@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Main {
    public static void main(String[] args) throws IOException {
-      EchoMultiClientServer myServer = new EchoMultiClientServer();
+      EchoServer myServer = new EchoServer();
       myServer.start(6666);
    }
 }

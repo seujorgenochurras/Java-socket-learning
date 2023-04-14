@@ -35,6 +35,7 @@ class MainTest {
       System.out.println(client.sendMessage("hgd"));
       System.out.println(client.sendMessage("."));
       System.out.println(client.sendMessage("close"));
+      System.out.println("\n\n\n\n\n\n\n\n");
 
       System.out.println(client1.sendMessage("hegy"));
       System.out.println(client1.sendMessage("heyjgyjgyjdd"));
@@ -42,6 +43,8 @@ class MainTest {
       System.out.println(client1.sendMessage("hgyjgyjgyjgd"));
       System.out.println(client1.sendMessage("awdawdaw."));
       System.out.println(client1.sendMessage("close"));
+      System.out.println("\n\n\n\n\n\n\n\n");
+
 
       System.out.println(client2.sendMessage("hi"));
       System.out.println(client2.sendMessage("heazxczxczxcdd"));
@@ -49,6 +52,8 @@ class MainTest {
       System.out.println(client2.sendMessage("hzxczxvxcvxcgd"));
       System.out.println(client2.sendMessage("asd."));
       System.out.println(client2.sendMessage("close"));
+      System.out.println("\n\n\n\n\n\n\n\n");
+
 
       System.out.println(client3.sendMessage("hi"));
       System.out.println(client3.sendMessage("hedd"));
@@ -56,5 +61,7 @@ class MainTest {
       System.out.println(client3.sendMessage("hgd"));
       System.out.println(client3.sendMessage("."));
       System.out.println(client3.sendMessage("close"));
+      System.out.println("\n\n\n\n\n\n\n\n");
+
    }
 }
