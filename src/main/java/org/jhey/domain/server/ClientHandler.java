@@ -15,25 +15,22 @@ public class ClientHandler extends Thread{
     private String clientName;
    public ClientHandler(Socket serverSocket) {
       this.serverSocket = serverSocket;
-
-      //This need EMERGENT refactoring, the guy that I'm using as a guide is a total idiot
-      //When user enters, the client side will ask for a name
-      //Then it'll log into the server, so that's the first thing that he'll type
-      this.clientName = clientConsole.getClientMessage();
-
-
       try {
          clientConsole = new ClientConsole(
                  new BufferedReader(new InputStreamReader(serverSocket.getInputStream())),
                  new BufferedWriter(new OutputStreamWriter(serverSocket.getOutputStream())));
-         clientConsole.sendMessage("Entering");
-      }catch (IOException e){
-      logger.severe("Couldn't start a client handler");
-         interrupt();
-      }
+         clientConsole.sendMessage("Joined!");
 
-      if(clientHandlers.stream().anyMatch(client -> client.getName().equals(this.getName()))){
-          this.clientName = clientName.concat("1");
+         //This need EMERGENT refactoring, the guy that I'm using as a guide is a total idiot
+         //When user enters, the client side will ask for a name
+         //Then it'll log into the server, so that's the first thing that he'll type
+         this.clientName = clientConsole.getClientMessage();
+
+      }catch (IOException e){
+
+      logger.severe("Couldn't start a client handler");
+      close();
+         interrupt();
       }
       clientHandlers.add(this);
    }
@@ -48,22 +45,30 @@ public class ClientHandler extends Thread{
          interrupt();
       }
    }
+
+   public String getClientName() {
+      return clientName;
+   }
+
    @Override
    public void run() {
       String messageFromClient;
       while(serverSocket.isConnected()){
+         try {
             messageFromClient = clientConsole.getClientMessage();
-            if(messageFromClient.equals("null")) {
-               close();
-               break;
-            }
-            broadcastMessage(messageFromClient);
+         } catch (IOException e) {
+            close();
+            break;
+         }
+         broadcastMessage(messageFromClient);
       }
    }
 
-   private void broadcastMessage(String message){
+   public void broadcastMessage(String message){
       clientHandlers.forEach(clientHandler -> {
-         clientConsole.sendMessage(message);
+         if (!clientHandler.clientName.equals(this.clientName)) {
+         clientHandler.clientConsole.sendMessage(message);
+         }
       });
    }
    public void leaveParty(){

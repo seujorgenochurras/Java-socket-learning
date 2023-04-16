@@ -26,21 +26,21 @@ public class Client {
       Scanner scanner = new Scanner(System.in);
       while(serverSocket.isConnected()){
          String messageToSend = scanner.nextLine();
-         clientConsole.sendMessage( userName + " " + messageToSend);
+         clientConsole.sendMessage( userName + ": " + messageToSend);
       }
    }
 
 
    public void listenForMessages(){
-
       new Thread( () -> {
          String messageFromParty;
          while (serverSocket.isConnected()){
-            messageFromParty = clientConsole.getClientMessage();
-            if(messageFromParty.equals("null")){
+            try {
+               messageFromParty = clientConsole.getClientMessage();
+                System.out.println(messageFromParty);
+            } catch (IOException e) {
                close();
             }
-            System.out.println(messageFromParty);
          }
       }).start();
    }
@@ -55,12 +55,12 @@ public class Client {
    }
 
    public static void main(String[] args) throws IOException, InterruptedException {
-//      Scanner scanner = new Scanner(System.in);
-//      System.out.println("What's your name?");
-//      String clientName = scanner.nextLine();
-//      int port = getUserPort(scanner);
+      Scanner scanner = new Scanner(System.in);
+      System.out.println("What's your name?");
+      String clientName = scanner.nextLine();
+      int port = getUserPort(scanner);
 
-      Client client = new Client(new Socket("127.0.0.1", 6969), "clientName");
+      Client client = new Client(new Socket("127.0.0.1", port), clientName);
       client.listenForMessages();
       client.sendMessage();
 
@@ -69,12 +69,14 @@ public class Client {
    }
    private static int getUserPort(Scanner scanner){
       System.out.println("What's the port that you're trying to enter?");
-
+      int port;
       try{
-         return scanner.nextInt();
+         port = scanner.nextInt();
       }catch (InputMismatchException e){
          System.out.println("You're an idiot");
+         scanner.nextLine();
          return getUserPort(scanner);
       }
+      return port;
    }
 }

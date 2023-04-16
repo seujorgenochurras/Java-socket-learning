@@ -17,9 +17,9 @@ public class Server{
             System.out.println("A client has joined");
             ClientHandler clientHandler = new ClientHandler(clientSocket);
             clientHandler.start();
+            clientHandler.broadcastMessage("A wild " + clientHandler.getClientName() + " has entered the party");
          }catch (IOException e){
             logger.severe("Something went terrible wrong when adding a client");
-
          }
       }
    }
@@ -31,7 +31,6 @@ public class Server{
    private void generateServer(int port){
       try {
          serverSocket = new ServerSocket(port);
-
       }catch (IOException e){
          logger.severe("Couldn't start the server");
          Thread.currentThread().interrupt();
@@ -41,7 +40,6 @@ public class Server{
    public void close(){
       try {
       serverSocket.close();
-
       }catch (IOException e){
          logger.severe("Couldn't close the server");
          Thread.currentThread().interrupt();
